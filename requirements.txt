@@ -1,2 +1,5 @@
 MyMySQL==1.0.2
 python-dotenv==0.19.1
+Adafruit_DHT==1.4.0
+adafruit-circuitpython-bh1750==1.0.5
+Adafruit-ADS1x15==1.0.2
