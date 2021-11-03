@@ -1,0 +1,1 @@
+this folder provides logs from application
