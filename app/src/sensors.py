@@ -11,6 +11,8 @@ GPIO.setmode(GPIO.BCM)
 logger = logging.getLogger(__name__)
 
 i2c = board.I2C()
+# relay as output
+GPIO.setup(int(os.getenv('RELAY_PIN')), GPIO.OUT)  # relay
 
 class Sensor:
     """
@@ -25,15 +27,9 @@ class Sensor:
     """
 
     def __init__(self):
-
         self.dht22 = Adafruit_DHT.read_retry(Adafruit_DHT.DHT22, os.getenv('DHT22_PIN'))
         self.bh1750 = adafruit_bh1750.BH1750(i2c)
-
-        # relay as output
-        GPIO.setup(int(os.getenv('RELAY_PIN')), GPIO.OUT) # relay
-
         self.ads1155 = Adafruit_ADS1x15.ADS1115()
-        pass
 
     def get_temperature(self):
         logger.debug("Get temperature")
