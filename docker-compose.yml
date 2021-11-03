@@ -6,6 +6,7 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD?Variable not set}
       MYSQL_DATABASE: ${MYSQL_DATABASE?Variable not set}
+      TZ: Asia/Jakarta
     ports:
       - ${MYSQL_PORT?Variable not set}:3306
     volumes:
