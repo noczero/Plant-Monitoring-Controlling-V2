@@ -29,17 +29,17 @@ class Sensor:
     """
 
     def __init__(self):
-        self.dht22 = Adafruit_DHT.read_retry(Adafruit_DHT.DHT22, os.getenv('DHT22_PIN'))
+        self.dht22 = Adafruit_DHT.read_retry(Adafruit_DHT.DHT22, int(os.getenv('DHT22_PIN')))
         self.bh1750 = adafruit_bh1750.BH1750(i2c)
         self.ads1155 = Adafruit_ADS1x15.ADS1115()
 
     def get_temperature(self):
         logger.debug("Get temperature")
-        return self.dht22[0]
+        return self.dht22[1]
 
     def get_humidity(self):
         logger.debug("Get Humidity")
-        return self.dht22[1]
+        return self.dht22[0]
 
     def get_soils_moisture(self):
         logger.debug("Get Soil Moisture")
