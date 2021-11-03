@@ -19,6 +19,11 @@ services:
       PMA_PASSWORD: root
     ports:
       - ${PHPMYADMIN_PORT?Variable not set}:80
-
+#  app:
+#    platform: "linux/arm/v6"
+#    container_name: "plant-monitoring-controlling"
+#    build: .
+#    volumes:
+#      - ".:/usr/src/app:rw"
 volumes:
   mysql-plant:

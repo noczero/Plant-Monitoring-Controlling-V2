@@ -1,7 +1,7 @@
 import logging.config
 import os
 from time import sleep
-
+import RPi.GPIO as GPIO
 from src.sensors import Sensor
 from db.connection import Database
 from dotenv import load_dotenv
@@ -15,10 +15,17 @@ logger = logging.getLogger(__name__)
 
 if __name__ == '__main__':
     logger.info("Plant Monitoring and Controlling Apps is starting...")
-    my_sensor = Sensor()
-    my_sensor.get_temperature()
 
-    while True:
-        my_db = Database()
-        my_db.insert_plant_data_to_mysql(my_sensor)
-        sleep(1)
+    try:
+        while True:
+            my_sensor = Sensor()
+            my_db = Database()
+            my_db.insert_plant_data_to_mysql(my_sensor)
+            sleep(1)
+
+    except KeyboardInterrupt:
+        print("Press Ctrl-C to terminate while statement")
+        pass
+    finally:
+        GPIO.cleanup()
+

@@ -1,7 +1,16 @@
 import logging
+# Import the ADS1x15 module.
+import os
+import Adafruit_ADS1x15
+import board
+import adafruit_bh1750
+import Adafruit_DHT
+import RPi.GPIO as GPIO
+GPIO.setmode(GPIO.BCM)
 
 logger = logging.getLogger(__name__)
 
+i2c = board.I2C()
 
 class Sensor:
     """
@@ -16,30 +25,46 @@ class Sensor:
     """
 
     def __init__(self):
-        self.dht22 = None
-        self.bh1750 = None
-        self.relay = None
-        self.ads1155 = None
+
+        self.dht22 = Adafruit_DHT.read_retry(Adafruit_DHT.DHT22, os.getenv('DHT22_PIN'))
+        self.bh1750 = adafruit_bh1750.BH1750(i2c)
+
+        # relay as output
+        GPIO.setup(int(os.getenv('RELAY_PIN')), GPIO.OUT) # relay
+
+        self.ads1155 = Adafruit_ADS1x15.ADS1115()
         pass
 
     def get_temperature(self):
         logger.debug("Get temperature")
-        return 1.0
+        return self.dht22[0]
 
     def get_humidity(self):
         logger.debug("Get Humidity")
-        return 11.0
+        return self.dht22[1]
 
     def get_soils_moisture(self):
         logger.debug("Get Soil Moisture")
-        return [1, 1]
+        adc_list = [0]*2
+        for i in range(2):
+            adc_list[i] = self.ads1155.read_adc(i, gain=1)
+        return adc_list
 
     def get_light_intensity(self):
         logger.debug("Get Light Intensity")
-        return 1.0
+        return self.bh1750.lux
 
-    def control_relay(self):
+    def control_relay(self, command):
         logger.debug("Control Relay")
+        if command == "ON":
+            logger.info("Watering ON")
+            GPIO.output(os.getenv('RELAY_PIN'), GPIO.LOW)
+        elif command == "OFF":
+            logger.info("Watering OFF")
+            GPIO.output(os.getenv('RELAY_PIN'), GPIO.HIGH)
+        else:
+            logger.error("Invalid command")
+
         return True
 
 
