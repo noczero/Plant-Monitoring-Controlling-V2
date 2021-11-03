@@ -23,4 +23,9 @@ $  sudo reboot
 $  sudo pip3 install docker-compose
 $  sudo systemctl enable docker
 
+# Change python default to 3.7
+sudo update-alternatives --install /usr/bin/python python /usr/bin/python3.7 2
+sudo update-alternatives --install /usr/bin/python python /usr/bin/python2.7 1
+update-alternatives --list python
 ```
+
