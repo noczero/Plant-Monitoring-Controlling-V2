@@ -15,21 +15,21 @@ logger = logging.getLogger(__name__)
 
 if __name__ == '__main__':
     logger.info("Plant Monitoring and Controlling Apps is starting...")
-    my_sensor = Sensor()
-    my_db = Database()
-    my_db.insert_plant_data_to_mysql(my_sensor)
-    GPIO.cleanup()
+    #my_sensor = Sensor()
+    #my_db = Database()
+    #my_db.insert_plant_data_to_mysql(my_sensor)
+    #GPIO.cleanup()
 
-    # try:
-    #     while True:
-    #         my_sensor = Sensor()
-    #         my_db = Database()
-    #         my_db.insert_plant_data_to_mysql(my_sensor)
-    #         sleep(1)
-    #
-    # except KeyboardInterrupt:
-    #     print("Press Ctrl-C to terminate while statement")
-    #     pass
-    # finally:
-    #     GPIO.cleanup()
+    try:
+         while True:
+             my_sensor = Sensor()
+             my_db = Database()
+             my_db.insert_plant_data_to_mysql(my_sensor)
+             sleep(1)
+
+    except KeyboardInterrupt:
+         print("Press Ctrl-C to terminate while statement")
+         pass
+    finally:
+         GPIO.cleanup()
 
