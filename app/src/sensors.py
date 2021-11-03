@@ -6,6 +6,8 @@ import board
 import adafruit_bh1750
 import Adafruit_DHT
 import RPi.GPIO as GPIO
+from dotenv import load_dotenv
+load_dotenv()  # take environment variables from .env.
 GPIO.setmode(GPIO.BCM)
 
 logger = logging.getLogger(__name__)
