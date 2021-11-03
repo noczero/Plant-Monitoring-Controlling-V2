@@ -16,7 +16,7 @@ services:
     environment:
       PMA_HOST: db
       PMA_USER: root
-      PMA_PASSWORD: root
+      PMA_PASSWORD: ${MYSQL_PASSWORD?Variable not set}
     ports:
       - ${PHPMYADMIN_PORT?Variable not set}:80
 #  app:
