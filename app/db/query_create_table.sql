@@ -1,6 +1,6 @@
 create table plant
 (
-    id              int auto_increment primary key,
+    id              bigint auto_increment primary key,
     name            varchar(50)                         null,
     temperature     float                               null,
     humidity        float                               null,
