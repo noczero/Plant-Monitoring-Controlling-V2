@@ -23,7 +23,7 @@ def discrete_soil_reading(raw_analog):
         status = "High"
     elif 15 <= percentage <= 25:
         status = "Normal"
-    elif 0 < percentage < 15:
+    elif 0 <= percentage < 15:
         status = "Low"
 
     return status
