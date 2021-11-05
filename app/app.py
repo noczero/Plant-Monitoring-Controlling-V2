@@ -7,33 +7,29 @@ from db.connection import Database
 from dotenv import load_dotenv
 import os
 import json
-
 load_dotenv()  # take environment variables from .env.
 
 logging.config.fileConfig('logging.conf', disable_existing_loggers=False)
 logger = logging.getLogger(__name__)
 
+
 if __name__ == '__main__':
     logger.info("Plant Monitoring and Controlling Apps is starting...")
-    # my_sensor = Sensor()
-    # my_db = Database()
-    # my_db.insert_plant_data_to_mysql(my_sensor)
-    # GPIO.cleanup()
-
-    # relay as output
-    GPIO.setmode(GPIO.BCM)
-    GPIO.setup(int(os.getenv('RELAY_PIN')), GPIO.OUT)  # relay
-    GPIO.output(int(os.getenv('RELAY_PIN')), GPIO.LOW)  # set as OFF
+    #my_sensor = Sensor()
+    #my_db = Database()
+    #my_db.insert_plant_data_to_mysql(my_sensor)
+    #GPIO.cleanup()
 
     try:
-        while True:
-            my_sensor = Sensor()
-            my_db = Database()
-            my_db.insert_plant_data_to_mysql(my_sensor)
-            sleep(1)
+         while True:
+             my_sensor = Sensor()
+             my_db = Database()
+             my_db.insert_plant_data_to_mysql(my_sensor)
+             sleep(1)
 
     except KeyboardInterrupt:
-        print("Press Ctrl-C to terminate while statement")
-        pass
+         print("Press Ctrl-C to terminate while statement")
+         pass
     finally:
-        GPIO.cleanup()
+         GPIO.cleanup()
+
