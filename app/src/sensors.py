@@ -57,6 +57,7 @@ class Sensor:
         adc_list = [0] * len(PLANT_LIST)
         discrete_value = [''] * len(PLANT_LIST)  # make empty string array
         for i in range(len(PLANT_LIST)):
+            logger.debug(f"index : {i}")
             # get value from ads1155 with gain 2
             adc_value = self.ads1155.read_adc(i, gain=2)
             logger.debug(f"ADC Values : {adc_value}")
