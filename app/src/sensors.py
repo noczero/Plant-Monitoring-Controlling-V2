@@ -17,8 +17,10 @@ GPIO.setmode(GPIO.BCM)
 logger = logging.getLogger(__name__)
 
 i2c = board.I2C()
+
 # relay as output
 GPIO.setup(int(os.getenv('RELAY_PIN')), GPIO.OUT)  # relay
+GPIO.output(os.getenv('RELAY_PIN'), GPIO.HIGH) # set as OFF
 
 PLANT_LIST = json.loads(os.getenv('PLANT_LIST'))
 
