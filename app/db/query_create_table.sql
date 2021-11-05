@@ -5,7 +5,7 @@ create table plant
     temperature     float                               null,
     humidity        float                               null,
     light_intensity float                               null,
-    soil_moisture   float                               null,
+    soil_moisture   varchar(10)                         null,
     status          varchar(50)                         null,
     time            timestamp default CURRENT_TIMESTAMP not null
 );
