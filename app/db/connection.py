@@ -1,7 +1,10 @@
 import json
+import logging
 import pymysql.cursors
 from dotenv import load_dotenv
 import os
+
+logger = logging.getLogger(__name__)
 
 load_dotenv()  # take environment variables from .env.
 PLANT_LIST = json.loads(os.getenv('PLANT_LIST'))
@@ -25,17 +28,27 @@ class Database:
 
                 # iterate over plant list
                 for index, plant_name in enumerate(PLANT_LIST):
+                    temperature =  sensor.get_temperature()
+                    humidity =  sensor.get_humidity()
+                    light_intensity = sensor.get_light_intensity()
+                    soil_moisture = sensor.get_soils_moisture()[index]
+
                     sql = "INSERT INTO `plant` (`name`, `temperature`, `humidity`, `light_intensity`, `soil_moisture`) VALUES (%s, %s, %s, %s, %s)"
                     cursor.execute(sql,
                                    (
                                        plant_name,
-                                       sensor.get_temperature(),
-                                       sensor.get_humidity(),
-                                       sensor.get_light_intensity(),
+                                       temperature,
+                                       humidity,
+                                       light_intensity,
                                        # sensor.get_soils_moisture()[0] if plant_name == "plant-A" else sensor.get_soils_moisture()[1],
-                                       sensor.get_soils_moisture()[index]
+                                       soil_moisture
                                    )
                                    )
+
+                    logger.info(f"-- Data -- Temperature : {temperature} "
+                                f"\t Humidity : {humidity} "
+                                f"\t Light Intensity : {light_intensity}"
+                                f"\t Soil Moisture : {soil_moisture}" )
 
             # connection is not autocommit by default. So you must commit to save
             # your changes.

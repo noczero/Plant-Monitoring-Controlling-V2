@@ -59,6 +59,7 @@ class Sensor:
         for i in range(len(PLANT_LIST)):
             # get value from ads1155 with gain 2
             adc_value = self.ads1155.read_adc(i, gain=2)
+            logger.debug(f"ADC Values : {adc_value}")
 
             # convert to discreate value
             discrete_value[i] = discrete_soil_reading(raw_analog=adc_value) # set value to LOW, NORMAL, or HIGH
