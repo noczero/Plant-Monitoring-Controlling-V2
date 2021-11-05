@@ -1,3 +1,4 @@
+import json
 import logging
 # Import the ADS1x15 module.
 import os
@@ -7,6 +8,9 @@ import adafruit_bh1750
 import Adafruit_DHT
 import RPi.GPIO as GPIO
 from dotenv import load_dotenv
+
+from .utils import discrete_soil_reading
+
 load_dotenv()  # take environment variables from .env.
 GPIO.setmode(GPIO.BCM)
 
@@ -15,6 +19,9 @@ logger = logging.getLogger(__name__)
 i2c = board.I2C()
 # relay as output
 GPIO.setup(int(os.getenv('RELAY_PIN')), GPIO.OUT)  # relay
+
+PLANT_LIST = json.loads(os.getenv('PLANT_LIST'))
+
 
 class Sensor:
     """
@@ -43,10 +50,18 @@ class Sensor:
 
     def get_soils_moisture(self):
         logger.debug("Get Soil Moisture")
-        adc_list = [0]*2
-        for i in range(2):
-            adc_list[i] = self.ads1155.read_adc(i, gain=1)
-        return adc_list
+
+        # read from ads1155 based on plant number set in .env, max [4]
+        adc_list = [0] * len(PLANT_LIST)
+        discrete_value = [''] * len(PLANT_LIST)  # make empty string array
+        for i in range(len(PLANT_LIST)):
+            # get value from ads1155 with gain 2
+            adc_value = self.ads1155.read_adc(i, gain=2)
+
+            # convert to discreate value
+            discrete_value[i] = discrete_soil_reading(raw_analog=adc_value) # set value to LOW, NORMAL, or HIGH
+
+        return discrete_value
 
     def get_light_intensity(self):
         logger.debug("Get Light Intensity")
@@ -64,5 +79,3 @@ class Sensor:
             logger.error("Invalid command")
 
         return True
-
-
