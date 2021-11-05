@@ -20,7 +20,7 @@ i2c = board.I2C()
 
 # relay as output
 GPIO.setup(int(os.getenv('RELAY_PIN')), GPIO.OUT)  # relay
-GPIO.output(int(os.getenv('RELAY_PIN')), GPIO.HIGH) # set as OFF
+GPIO.output(int(os.getenv('RELAY_PIN')), GPIO.LOW) # set as OFF
 
 PLANT_LIST = json.loads(os.getenv('PLANT_LIST'))
 
@@ -73,10 +73,10 @@ class Sensor:
         logger.debug("Control Relay")
         if command == "ON":
             logger.info("Watering ON")
-            GPIO.output(int(os.getenv('RELAY_PIN')), GPIO.LOW)
+            GPIO.output(int(os.getenv('RELAY_PIN')), GPIO.HIGH)
         elif command == "OFF":
             logger.info("Watering OFF")
-            GPIO.output(int(os.getenv('RELAY_PIN')), GPIO.HIGH)
+            GPIO.output(int(os.getenv('RELAY_PIN')), GPIO.LOW)
         else:
             logger.error("Invalid command")
 
