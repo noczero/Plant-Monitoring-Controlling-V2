@@ -29,3 +29,31 @@ sudo update-alternatives --install /usr/bin/python python /usr/bin/python2.7 1
 update-alternatives --list python
 ```
 
+# How to Run Apps
+1. Konek ke reaspi, pakai teamviewer atau pakai monitor.
+2. Buka terminal
+3. cd ~/Plant-Monitoring-Controlling
+4. cd app
+5. python app.py
+
+# How to reset databade
+1. Buka terminal 
+2. cd ~/Plant-Monitoring-Controlling
+3. docker-compose down -v
+4. docker-compose up -d
+5. Buka phpmyadmin, bisa  cek IP raspi, kemudian di laptop lain dengan satu jaringan, bnuka browser 
+ketik url IPrasI:8080
+6. Pilih database plant, masuk ke menu SQL, copy query yang ada di query_create_table.sql
+ kemudian tekan go.
+7. Jalankan aplikasi pada step sebelunmya.
+
+# How to change plant name
+1. Masuk ke folder project
+2. edit file .env pakai nano
+```bash
+nano .env
+```
+Edit PLANT_LIST dengan nama yang diinginakn.
+untuk save tekan ctrl + x kemudian tekan y
+3. docker-compose up -d
+
