@@ -23,6 +23,7 @@ services:
     build:
       context: ./api
       dockerfile: Dockerfile
+    restart: always
     volumes:
       - "./api:/api/api:rw"
     ports:
