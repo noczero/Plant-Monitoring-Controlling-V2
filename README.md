@@ -57,3 +57,10 @@ Edit PLANT_LIST dengan nama yang diinginakn.
 untuk save tekan ctrl + x kemudian tekan y
 3. docker-compose up -d
 
+
+# How to run API service
+1. Jalankan service
+```bash
+$ docker-compose up -d
+```
+2. Buka browser, ketik url localhost:8081
