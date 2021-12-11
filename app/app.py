@@ -25,7 +25,7 @@ if __name__ == '__main__':
              my_sensor = Sensor()
              my_db = Database()
              my_db.insert_plant_data_to_mysql(my_sensor)
-             sleep(1)
+             sleep(60) # 1 minutes
 
     except KeyboardInterrupt:
          print("Press Ctrl-C to terminate while statement")
