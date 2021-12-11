@@ -40,7 +40,8 @@ class Sensor:
     def __init__(self):
         self.dht22 = Adafruit_DHT.read_retry(Adafruit_DHT.DHT22, int(os.getenv('DHT22_PIN')))
         self.bh1750 = adafruit_bh1750.BH1750(i2c)
-        self.ads1155 = Adafruit_ADS1x15.ADS1115()
+        self.ads1155 = Adafruit_ADS1x15.ADS1115(address=0x48)
+        self.ads1155_second = Adafruit_ADS1x15.ADS1115(address=0x4a)
 
     def get_temperature(self):
         logger.debug("Get temperature")
@@ -58,8 +59,18 @@ class Sensor:
         discrete_value = [''] * len(PLANT_LIST)  # make empty string array
         for i in range(len(PLANT_LIST)):
             logger.debug(f"index : {i}")
-            # get value from ads1155 with gain 2
-            adc_value = self.ads1155.read_adc(i, gain=2)
+
+            if i < 4:
+                # i = 0 - 3
+                # get value from first ads1155 with gain 2
+                adc_value = self.ads1155.read_adc(i, gain=2)
+            elif i < 8:
+                # i = 4 - 7
+                # get value from second ads1115
+                adc_value = self.ads1155_second.read_adc((i - 4), gain=2)
+            else:
+                logger.error("PLANT LIST out of range sensor ADS1155")
+
             logger.debug(f"ADC Values : {adc_value}")
 
             # convert to discreate value
