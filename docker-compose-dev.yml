@@ -19,11 +19,13 @@ services:
       PMA_PASSWORD: ${MYSQL_PASSWORD?Variable not set}
     ports:
       - ${PHPMYADMIN_PORT?Variable not set}:80
-#  app:
-#    platform: "linux/arm/v6"
-#    container_name: "plant-monitoring-controlling"
-#    build: .
-#    volumes:
-#      - ".:/usr/src/app:rw"
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    volumes:
+      - "./api:/api/api:rw"
+    ports:
+      - ${API_PORT?Variable not set}:8000
 volumes:
   mysql-plant:
