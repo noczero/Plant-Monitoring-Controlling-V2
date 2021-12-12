@@ -42,3 +42,25 @@ class KNN(TrainedModels):
 
         return self.trained_model.predict([test_features])[0]
 
+
+class DecisionTree(TrainedModels):
+    def __init__(self, plant: PlantModels):
+        super().__init__(plant)
+
+        if plant.name.lower() in 'bayam':
+            # load bayam models
+            self.trained_model = pickle.load(open('api/trained/bayam_dt_model.sav', 'rb'))
+
+        elif plant.name.lower() in 'caisim':
+            # load caisim models
+            self.trained_model = pickle.load(open('api/trained/caisim_dt_model.sav', 'rb'))
+        else:
+            logger.warn("Type of plant doesn't support yet")
+
+    def get_prediction(self):
+        test_features = [self.plant_models.temperature,
+                         self.plant_models.humidity,
+                         self.plant_models.light_intensity,
+                         self.plant_models.soil_moisture_encode]
+
+        return self.trained_model.predict([test_features])[0]
