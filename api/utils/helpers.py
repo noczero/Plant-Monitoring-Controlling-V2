@@ -24,11 +24,11 @@ class KNN(TrainedModels):
     def __init__(self, plant: PlantModels):
         super().__init__(plant)
 
-        if plant.name.lower() in 'bayam':
+        if 'bayam' in plant.name.lower():
             # load bayam models
             self.trained_model = pickle.load(open('api/trained/bayam_knn_model.sav', 'rb'))
 
-        elif plant.name.lower() in 'caisim':
+        elif 'caisim' in plant.name.lower():
             # load caisim models
             self.trained_model = pickle.load(open('api/trained/caisim_knn_model.sav', 'rb'))
         else:
@@ -47,13 +47,13 @@ class DecisionTree(TrainedModels):
     def __init__(self, plant: PlantModels):
         super().__init__(plant)
 
-        if plant.name.lower() in 'bayam':
-            # load bayam models
-            self.trained_model = pickle.load(open('api/trained/bayam_dt_model.sav', 'rb'))
+        if 'kale' in plant.name.lower() :
+            # load kale models
+            self.trained_model = pickle.load(open('api/trained/kale_dt_model.sav', 'rb'))
 
-        elif plant.name.lower() in 'caisim':
-            # load caisim models
-            self.trained_model = pickle.load(open('api/trained/caisim_dt_model.sav', 'rb'))
+        elif 'seledri' in plant.name.lower() :
+            # load seledri models
+            self.trained_model = pickle.load(open('api/trained/seledri_dt_model.sav', 'rb'))
         else:
             logger.warn("Type of plant doesn't support yet")
 
