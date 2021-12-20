@@ -4,6 +4,8 @@ import pymysql.cursors
 from dotenv import load_dotenv
 import os
 
+from app.src.utils import get_prediction
+
 logger = logging.getLogger(__name__)
 
 load_dotenv()  # take environment variables from .env.
@@ -22,34 +24,48 @@ class Database:
                                           cursorclass=pymysql.cursors.DictCursor)
 
     def insert_plant_data_to_mysql(self, sensor):
+        """
+        Insert realtime plant data and prediction status to database
+        :param sensor:
+        :return:
+        """
+        prediction_list = []
         with self.connection:
             with self.connection.cursor() as cursor:
                 # Create a new record
 
                 # iterate over plant list
                 for index, plant_name in enumerate(PLANT_LIST):
-                    temperature =  sensor.get_temperature()
-                    humidity =  sensor.get_humidity()
-                    light_intensity = sensor.get_light_intensity()
-                    soil_moisture = sensor.get_soils_moisture()[index]
 
-                    sql = "INSERT INTO `plant` (`name`, `temperature`, `humidity`, `light_intensity`, `soil_moisture`) VALUES (%s, %s, %s, %s, %s)"
+                    # get prediction to API service
+                    input_data = sensor.get_single_plant_data(plant_name=plant_name, index_plant=index)
+                    prediction = get_prediction(input_data=input_data)
+                    prediction_list.append(prediction)
+
+                    # insert data to table
+                    sql = "INSERT INTO `plant` " \
+                          "(`name`, `temperature`, `humidity`, `light_intensity`, `soil_moisture`, `status`) " \
+                          "VALUES (%s, %s, %s, %s, %s, %s)"
                     cursor.execute(sql,
                                    (
                                        plant_name,
-                                       temperature,
-                                       humidity,
-                                       light_intensity,
-                                       # sensor.get_soils_moisture()[0] if plant_name == "plant-A" else sensor.get_soils_moisture()[1],
-                                       soil_moisture
+                                       sensor.temperature,
+                                       sensor.humidity,
+                                       sensor.light_intensity,
+                                       sensor.soil_moisture_list[index],
+                                       prediction['status']
                                    )
                                    )
 
-                    logger.info(f"-- Data -- Temperature : {temperature} "
-                                f"\t Humidity : {humidity} "
-                                f"\t Light Intensity : {light_intensity}"
-                                f"\t Soil Moisture : {soil_moisture}" )
+                    # display log
+                    logger.info(f"-- Data -- Temperature : {sensor.temperature} "
+                                f"\t Humidity : {sensor.humidity} "
+                                f"\t Light Intensity : {sensor.light_intensity}"
+                                f"\t Soil Moisture : {sensor.soil_moisture_list[index]}")
+                    logger.info(f"-- Prediction -- \n {prediction}")
 
             # connection is not autocommit by default. So you must commit to save
             # your changes.
             self.connection.commit()
+
+        return prediction_list
