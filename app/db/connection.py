@@ -41,6 +41,7 @@ class Database:
                     input_data = sensor.get_single_plant_data(plant_name=plant_name, index_plant=index)
                     prediction = get_prediction(input_data=input_data)
                     prediction_list.append(prediction)
+                    status = prediction.get('status', None)
 
                     # insert data to table
                     sql = "INSERT INTO `plant` " \
@@ -53,7 +54,7 @@ class Database:
                                        sensor.humidity,
                                        sensor.light_intensity,
                                        sensor.soil_moisture_list[index],
-                                       prediction['status']
+                                       status
                                    )
                                    )
 

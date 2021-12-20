@@ -61,8 +61,10 @@ def get_prediction(input_data: dict):
 
     url = f"{URL_API}/prediction"
     response = requests.post(url, json=input_data)
-
-    return response.json()
+    if response.status_code != 200:
+        return None
+    else:
+        return response.json()
 
 
 def is_need_for_watering(prediction_list: [dict]):
@@ -72,7 +74,7 @@ def is_need_for_watering(prediction_list: [dict]):
     :return:
     """
     for prediction in prediction_list:
-        if prediction['status'] == "Not Optimal":
+        if prediction.get('status', '') == "Not Optimal":
             return True
 
     return False
