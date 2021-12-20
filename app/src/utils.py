@@ -1,4 +1,13 @@
+from dotenv import load_dotenv
+import os
+import requests
+
+load_dotenv()  # take environment variables from .env.
+
 MAX_VALUE_ADS = 32767
+
+BASE_URL_API = f"http://localhost:{os.getenv('API_PORT')}/v1" # set API URL
+URL_API = f"{BASE_URL_API}/{os.getenv('MODEL_NAME')}"
 
 
 def _map(x, min_input, max_input, min_output, max_output):
@@ -27,3 +36,43 @@ def discrete_soil_reading(raw_analog):
         status = "Low"
 
     return status
+
+
+def get_prediction(input_data: dict):
+    """
+    Do post request to API service that handle model prediction
+    :param input_data: dictionary with this schema {
+        "name": "Bayam",
+        "temperature": 33,
+        "humidity": 40,
+        "light_intensity": 100,
+        "soil_moisture": "HIGH"
+    }
+    :return: a dictionary with this schema {
+          "name": "Bayam",
+          "temperature": 33,
+          "humidity": 40,
+          "light_intensity": 100,
+          "soil_moisture": "HIGH",
+          "soil_moisture_encode": 100,
+          "status": "Optimal"
+        }
+    """
+
+    url = f"{URL_API}/prediction"
+    response = requests.post(url, json=input_data)
+
+    return response.json()
+
+
+def is_need_for_watering(prediction_list: [dict]):
+    """
+    Compare status in prediction list if any not optimal then return True
+    :param prediction_list:
+    :return:
+    """
+    for prediction in prediction_list:
+        if prediction['status'] == "Not Optimal":
+            return True
+
+    return False
