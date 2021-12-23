@@ -1,11 +1,11 @@
 # temp stage
-FROM python:3.9 as builder
+FROM python:3.9-buster as builder
 WORKDIR /api
 COPY requirements.txt .
 RUN pip wheel --no-cache-dir --no-deps --wheel-dir /api/wheels -r requirements.txt
 
 # final stage
-FROM python:3.9-slim
+FROM python:3.9-slim-buster
 COPY . /api/api
 
 ENV PYTHONPATH=/api
