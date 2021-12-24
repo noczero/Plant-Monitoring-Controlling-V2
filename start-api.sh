@@ -1,7 +1,9 @@
 #!/bin/sh
 
 echo "Start API Service"
+path_app="/home/pi/Plant-Monitoring-Controlling-V2"
+echo $path_app
+cd $path_app
+
 uvicorn api.app:app --host 0.0.0.0 --reload --port 8081
 
-echo "Start Jupyter Notebook Service"
-jupyter notebook --ip=0.0.0.0 --port=8082 --NotebookApp.token='' --NotebookApp.password=''
