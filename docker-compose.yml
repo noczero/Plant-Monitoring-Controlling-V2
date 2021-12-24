@@ -20,15 +20,15 @@ services:
       PMA_PASSWORD: ${MYSQL_PASSWORD?Variable not set}
     ports:
       - ${PHPMYADMIN_PORT?Variable not set}:80
-  api:
-    build:
-      context: ./api
-      dockerfile: Dockerfile
-    restart: always
-    volumes:
-      - "./api:/api/api:rw"
-    ports:
-      - ${API_PORT?Variable not set}:8000
+  #api:
+  #  build:
+  #    context: ./api
+  #    dockerfile: Dockerfile
+  #  restart: always
+  #  volumes:
+  #    - "./api:/api/api:rw"
+  #  ports:
+  #    - ${API_PORT?Variable not set}:8000
 
 volumes:
   mysql-plant:
