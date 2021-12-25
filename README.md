@@ -91,3 +91,13 @@ $ systemctl enable start-api.service
 $ systemctl enable start-jupyter.service
 
 ```
+
+
+# How to run final application
+Execute following command in terminal
+```bash
+$ cd ~/Plant-Monitoring-Controlling-V2
+$ ./start-api.sh
+$ cd app
+$ python app.py
+```
