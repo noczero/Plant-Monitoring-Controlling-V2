@@ -78,3 +78,16 @@ $ ln -s start-jupyter.sh start-jupyter
 $ sudo chmod 755 /etc/init.d/start-services-plant
 $ sudo update-rc.d start-services-plant defaults 
 ```
+2. Using services, execute this command
+```bash
+
+# copy files
+$ sudo cp start-api.service /etc/systemd/system/
+$ sudo cp start-jupyter.service /etc/systemd/system/
+
+# enable service
+$ systemctl daemon-reload
+$ systemctl enable start-api.service
+$ systemctl enable start-jupyter.service
+
+```
