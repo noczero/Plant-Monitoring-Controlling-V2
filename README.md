@@ -97,8 +97,7 @@ $ systemctl enable start-jupyter.service
 Execute following command in terminal.
 1. Start API service
 ```bash
-$ cd ~/Plant-Monitoring-Controlling-V2
-$ ./start-api.sh
+$ start-api
 ```
 
 2. Start App
