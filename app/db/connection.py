@@ -4,7 +4,7 @@ import pymysql.cursors
 from dotenv import load_dotenv
 import os
 
-from app.src.utils import get_prediction
+from src.utils import get_prediction
 
 logger = logging.getLogger(__name__)
 

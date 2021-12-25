@@ -3,7 +3,7 @@ import os
 from time import sleep
 import RPi.GPIO as GPIO
 
-from app.src.utils import is_need_for_watering
+from src.utils import is_need_for_watering
 from src.sensors import Sensor
 from db.connection import Database
 from dotenv import load_dotenv
