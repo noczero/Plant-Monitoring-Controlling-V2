@@ -23,6 +23,6 @@ class PlantModels(BaseModel):
                 "temperature": 33,
                 "humidity": 40,
                 "light_intensity": 100,
-                "soil_moisture": "HIGH"
+                "soil_moisture": "High"
             }
         }

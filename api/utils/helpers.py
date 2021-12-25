@@ -5,9 +5,9 @@ from fastapi.logger import logger
 from api.scheme.model_scheme import PlantModels
 
 MAP_SOIL_MOIST_ENCODE = {
-    "LOW": 0,
-    "NORMAL": 50,
-    "HIGH": 100
+    "Low": 0,
+    "Normal": 50,
+    "High": 100
 }
 
 
@@ -17,7 +17,7 @@ class TrainedModels:
         self.trained_model = None
         # set encode based on soil moisture
         if plant.soil_moisture:
-            self.plant_models.soil_moisture_encode = MAP_SOIL_MOIST_ENCODE[plant.soil_moisture]
+            self.plant_models.soil_moisture_encode = MAP_SOIL_MOIST_ENCODE[plant.soil_moisture.capitalize()]
 
 
 class KNN(TrainedModels):
