@@ -74,7 +74,8 @@ def is_need_for_watering(prediction_list: [dict]):
     :return:
     """
     for prediction in prediction_list:
-        if prediction.get('status', '') == "Not Optimal":
-            return True
+        if prediction:
+            if prediction.get('status', '') == "Not Optimal":
+                return True
 
     return False
