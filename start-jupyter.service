@@ -1,0 +1,9 @@
+[Unit]
+Description=Run jupyter notebook service on boot
+After=default.target
+
+[Service]
+ExecStart=/home/pi/Plant-Monitoring-Controlling-V2/start-jupyter.sh
+
+[Install]
+WantedBy=default.target
