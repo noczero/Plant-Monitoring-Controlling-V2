@@ -64,3 +64,17 @@ untuk save tekan ctrl + x kemudian tekan y
 $ docker-compose up -d
 ```
 2. Buka browser, ketik url localhost:8081
+
+# Add script to boot
+1. Make script link 
+``` bash
+$ ln -s start-api.sh start-api
+$ ln -s start-jupyter.sh start-jupyter
+```
+2. Copy start-services-plant to /etc/init.d
+
+3. Executer following command
+```bash 
+$ sudo chmod 755 /etc/init.d/start-services-plant
+$ sudo update-rc.d start-services-plant defaults 
+```

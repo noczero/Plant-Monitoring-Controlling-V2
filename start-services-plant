@@ -1,0 +1,35 @@
+#!/bin/bash
+# /etc/init.d/start-services-plant
+
+### BEGIN INIT INFO
+# Provides:noip
+# Required-Start:$remote_fs $syslog
+# Required-Stop:$remote_fs $syslog
+# Default-Start:2 3 4 5
+# Default-Stop:0 1 6
+# Short-Description:Start plant monitoring controlling services on  boot
+# Description:Start plant monitoring controlling services on  boot
+### END INIT INFO
+
+# define the path of `start-api.sh` script file
+# Adjust it if necessary
+project_path=/home/pi/Plant-Monitoring-Controlling-V2
+
+case "$1" in
+  start)
+    sleep 10
+    # run application we want to start
+    $project_path/start-api
+    $project_path/start-jupyter
+    ;;
+  stop)
+    echo "Stop command not yet handle"
+    ;;
+  *)
+    echo "Usage: /etc/init.d/start-services-plant {start|stop}"
+    exit 1
+    ;;
+esac
+
+exit 0
+#*******************************************************
