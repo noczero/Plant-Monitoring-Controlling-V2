@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 echo "Start Jupyter Notebook Service"
 path_app="/home/pi/Plant-Monitoring-Controlling-V2"
