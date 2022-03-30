@@ -22,7 +22,7 @@ firebase_admin.initialize_app(cred, {
 })
 
 # set root path as device
-ref = db.reference('raspberry-dev-1')
+ref = db.reference(os.getenv('DEVICE'))
 
 def _map(x, min_input, max_input, min_output, max_output):
     """
