@@ -15,15 +15,6 @@ load_dotenv()  # take environment variables from .env.
 PLANT_LIST = json.loads(os.getenv('PLANT_LIST'))
 MODE = os.getenv('MODE')
 
-cred = credentials.Certificate('service_account_firebase.json')
-
-# Initialize the app with a service account, granting admin privileges
-firebase_admin.initialize_app(cred, {
-    'databaseURL': 'https://plant-monitoring-n-controlling-default-rtdb.asia-southeast1.firebasedatabase.app/'
-})
-
-# set root path as device
-ref = db.reference('raspberry-dev-1')
 
 # Connect to the database
 class Database:
@@ -43,6 +34,7 @@ class Database:
         :return:
         """
         prediction_list = []
+        input_data_list = []
         with self.connection:
             with self.connection.cursor() as cursor:
                 # Create a new record
@@ -83,7 +75,7 @@ class Database:
                                    )
 
                     # insert data to firebase
-                    insert_data_to_firebase(ref, input_data)
+                    # insert_data_to_firebase(ref, input_data)
 
                     # display log
                     logger.info(f"-- Data -- Temperature : {sensor.temperature} "
@@ -96,4 +88,4 @@ class Database:
             # your changes.
             self.connection.commit()
 
-        return prediction_list
+        return prediction_list, input_data_list

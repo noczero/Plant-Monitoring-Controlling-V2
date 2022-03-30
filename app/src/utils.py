@@ -1,9 +1,10 @@
 from datetime import datetime
 
+import firebase_admin
 from dotenv import load_dotenv
 import os
 import requests
-from firebase_admin import db
+from firebase_admin import db, credentials
 
 load_dotenv()  # take environment variables from .env.
 
@@ -12,6 +13,16 @@ MAX_VALUE_ADS = 32767
 BASE_URL_API = f"http://localhost:{os.getenv('API_PORT')}/v1" # set API URL
 URL_API = f"{BASE_URL_API}/{os.getenv('MODEL_NAME')}"
 
+
+cred = credentials.Certificate('service_account_firebase.json')
+
+# Initialize the app with a service account, granting admin privileges
+firebase_admin.initialize_app(cred, {
+    'databaseURL': 'https://plant-monitoring-n-controlling-default-rtdb.asia-southeast1.firebasedatabase.app/'
+})
+
+# set root path as device
+ref = db.reference('raspberry-dev-1')
 
 def _map(x, min_input, max_input, min_output, max_output):
     """
@@ -84,46 +95,49 @@ def is_need_for_watering(prediction_list: [dict]):
     return False
 
 
-def insert_data_to_firebase(ref : db.reference, input_data: dict):
+def insert_data_to_firebase(input_data_list: [dict]):
     """
     Insert data to firebase
     :param ref: firebase reference database
-    :param input_data: data from sensor {
+    :param input_data: array data from sensor [{
         "name": "Bayam",
         "temperature": 33,
         "humidity": 40,
         "light_intensity": 100,
         "soil_moisture": "HIGH",
         "status" : "Optimal"
-    }
+    }]
     """
     current_data = ref.child('plants') # set plants path
 
-    # send data to firebase
-    current_data.set({
-        input_data.get('name'): {
+    # make structure
+    update_structure = {}
+
+    for input_data in input_data_list:
+        child = {
             'temperature': input_data.get('temperature'),
             'humidity': input_data.get('humidity'),
             'light_intensity': input_data.get('light_intensity'),
             'soil_moisture': input_data.get('soil_moisture'),
             'status': input_data.get('status')
         }
-    })
+        update_structure[input_data.get('name')] = child
 
-    # set logs path
-    logs = ref.child('logs')
+        # set logs path
+        logs = ref.child('logs')
 
-    # push data to firebase
-    logs.push().set(
-        {
-            'name': input_data.get('name'),
-            'temperature': input_data.get('temperature'),
-            'humidity': input_data.get('humidity'),
-            'light_intensity': input_data.get('light_intensity'),
-            'soil_moisture': input_data.get('soil_moisture'),
-            'status': input_data.get('status'),
-            'time': str(datetime.now())
-        }
-    )
+        # push data to firebase every single reading for logs
+        logs.push().set(
+            {
+                'name': input_data.get('name'),
+                'temperature': input_data.get('temperature'),
+                'humidity': input_data.get('humidity'),
+                'light_intensity': input_data.get('light_intensity'),
+                'soil_moisture': input_data.get('soil_moisture'),
+                'status': input_data.get('status'),
+                'time': str(datetime.now())
+            }
+        )
 
-
+    # send data to firebase for updating structure
+    current_data.set(update_structure)

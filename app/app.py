@@ -3,7 +3,7 @@ import os
 from time import sleep
 import RPi.GPIO as GPIO
 
-from src.utils import is_need_for_watering
+from src.utils import is_need_for_watering, insert_data_to_firebase
 from src.sensors import Sensor
 from db.connection import Database
 from dotenv import load_dotenv
@@ -30,7 +30,10 @@ if __name__ == '__main__':
             my_sensor.reading_all_sensors()
 
             # insert data to database
-            result = my_db.insert_plant_data_to_mysql(my_sensor)
+            result, input_data_list = my_db.insert_plant_data_to_mysql(my_sensor)
+
+            # insert to firebase
+            insert_data_to_firebase(input_data_list=input_data_list)
 
             # check for watering
             if is_need_for_watering(result):
