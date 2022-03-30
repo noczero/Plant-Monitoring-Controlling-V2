@@ -3,14 +3,27 @@ import logging
 import pymysql.cursors
 from dotenv import load_dotenv
 import os
+import firebase_admin
+from firebase_admin import credentials
+from firebase_admin import db
 
-from src.utils import get_prediction
+from src.utils import get_prediction, insert_data_to_firebase
 
 logger = logging.getLogger(__name__)
 
 load_dotenv()  # take environment variables from .env.
 PLANT_LIST = json.loads(os.getenv('PLANT_LIST'))
+MODE = os.getenv('MODE')
 
+cred = credentials.Certificate('../service_account_firebase.json')
+
+# Initialize the app with a service account, granting admin privileges
+firebase_admin.initialize_app(cred, {
+    'databaseURL': 'https://plant-monitoring-n-controlling-default-rtdb.asia-southeast1.firebasedatabase.app/'
+})
+
+# set root path as device
+ref = db.reference('raspberry-dev-1')
 
 # Connect to the database
 class Database:
@@ -39,12 +52,20 @@ class Database:
 
                     # get prediction to API service
                     input_data = sensor.get_single_plant_data(plant_name=plant_name, index_plant=index)
-                    prediction = get_prediction(input_data=input_data)
+
+                    # check mode
+                    if MODE == "TESTING":
+                        prediction = get_prediction(input_data=input_data) # hit prediciton to API
+                    elif MODE == "TRAINING":
+                        # TRAINING MODE
+                        prediction = None # set to none
+
                     prediction_list.append(prediction)
                     
                     status = None
                     if prediction:
                         status = prediction.get('status', None)
+                        input_data['status'] = status
                     
                     # insert data to table
                     sql = "INSERT INTO `plant` " \
@@ -60,6 +81,9 @@ class Database:
                                        status
                                    )
                                    )
+
+                    # insert data to firebase
+                    insert_data_to_firebase(ref, input_data)
 
                     # display log
                     logger.info(f"-- Data -- Temperature : {sensor.temperature} "

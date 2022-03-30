@@ -5,3 +5,4 @@ uvicorn
 pydantic
 fastapi
 scipy
+firebase_admin

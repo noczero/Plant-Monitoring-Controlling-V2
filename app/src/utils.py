@@ -1,6 +1,9 @@
+from datetime import datetime
+
 from dotenv import load_dotenv
 import os
 import requests
+from firebase_admin import db
 
 load_dotenv()  # take environment variables from .env.
 
@@ -79,3 +82,48 @@ def is_need_for_watering(prediction_list: [dict]):
                 return True
 
     return False
+
+
+def insert_data_to_firebase(ref : db.reference, input_data: dict):
+    """
+    Insert data to firebase
+    :param ref: firebase reference database
+    :param input_data: data from sensor {
+        "name": "Bayam",
+        "temperature": 33,
+        "humidity": 40,
+        "light_intensity": 100,
+        "soil_moisture": "HIGH",
+        "status" : "Optimal"
+    }
+    """
+    current_data = ref.child('plants') # set plants path
+
+    # send data to firebase
+    current_data.set({
+        input_data.get('name'): {
+            'temperature': input_data.get('temperature'),
+            'humidity': input_data.get('humidity'),
+            'light_intensity': input_data.get('light_intensity'),
+            'soil_moisture': input_data.get('soil_moisture'),
+            'status': input_data.get('status')
+        }
+    })
+
+    # set logs path
+    logs = ref.child('logs')
+
+    # push data to firebase
+    logs.push().set(
+        {
+            'name': input_data.get('name'),
+            'temperature': input_data.get('temperature'),
+            'humidity': input_data.get('humidity'),
+            'light_intensity': input_data.get('light_intensity'),
+            'soil_moisture': input_data.get('soil_moisture'),
+            'status': input_data.get('status'),
+            'time': str(datetime.now())
+        }
+    )
+
+
