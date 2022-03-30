@@ -58,7 +58,7 @@ class Database:
                     if prediction:
                         status = prediction.get('status', None)
                         input_data['status'] = status
-                    
+
                     # insert data to table
                     sql = "INSERT INTO `plant` " \
                           "(`name`, `temperature`, `humidity`, `light_intensity`, `soil_moisture`, `status`) " \
@@ -74,8 +74,8 @@ class Database:
                                    )
                                    )
 
-                    # insert data to firebase
-                    # insert_data_to_firebase(ref, input_data)
+                    # append input_data for return
+                    input_data_list.append(input_data)
 
                     # display log
                     logger.info(f"-- Data -- Temperature : {sensor.temperature} "
