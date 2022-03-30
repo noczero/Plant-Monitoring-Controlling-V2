@@ -15,7 +15,7 @@ load_dotenv()  # take environment variables from .env.
 PLANT_LIST = json.loads(os.getenv('PLANT_LIST'))
 MODE = os.getenv('MODE')
 
-cred = credentials.Certificate('../service_account_firebase.json')
+cred = credentials.Certificate('service_account_firebase.json')
 
 # Initialize the app with a service account, granting admin privileges
 firebase_admin.initialize_app(cred, {
