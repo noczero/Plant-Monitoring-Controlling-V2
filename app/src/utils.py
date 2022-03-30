@@ -108,12 +108,13 @@ def insert_data_to_firebase(input_data_list: [dict]):
         "status" : "Optimal"
     }]
     """
-    current_data = ref.child('plants') # set plants path
-
     # make structure
     update_structure = {}
 
+    # iterate over input data
     for input_data in input_data_list:
+
+        # make structure
         child = {
             'temperature': input_data.get('temperature'),
             'humidity': input_data.get('humidity'),
@@ -140,4 +141,10 @@ def insert_data_to_firebase(input_data_list: [dict]):
         )
 
     # send data to firebase for updating structure
+    current_data = ref.child('plants') # set plants path
     current_data.set(update_structure)
+
+    # send last time updated
+    last_time = ref.child('last_time_updated')
+    last_time.set(str(datetime.now()))
+
