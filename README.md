@@ -36,7 +36,7 @@ update-alternatives --list python
 4. cd app
 5. python app.py
 
-# How to reset databade
+# How to reset database
 1. Buka terminal 
 2. cd ~/Plant-Monitoring-Controlling
 3. docker-compose down -v
