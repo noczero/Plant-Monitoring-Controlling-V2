@@ -106,3 +106,25 @@ Open new terimnal
 $ cd ~/Plant-Monitoring-Controlling-V2/app
 $ python app.py
 ```
+
+# Training Ulang
+1. Ubah mode di .env jadi  MODE=TRAINING
+2. Ketika sudah selesai, export data ke file .csv
+3. Buat models di jupyter notebooks, dengan nama file dataset yang disesuaikan. dan file model.sav yang disesuaikan di file API. 
+
+misalnya :
+  * dataset : dataset_kale_A.csv
+Autogenerate (dari notebooks) :
+  * dataset_kale_A.xlsx 
+  * trained/kale_dt_model_A.sav
+
+# Testing ulang
+1. Ganti nilai MODE=TESTING
+2. Sesuaikan api/router/dt_endpoint.py dengan hasil model
+```python
+            self.trained_model = pickle.load(open('api/trained/kale_dt_model_2.sav', 'rb'))
+```
+3. Jalankan service api
+4. jalankan aplikasi utama
+
+
