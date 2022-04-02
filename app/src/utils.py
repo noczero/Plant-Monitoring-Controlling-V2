@@ -1,4 +1,5 @@
 from datetime import datetime
+import logging
 
 import firebase_admin
 from dotenv import load_dotenv
@@ -24,6 +25,9 @@ firebase_admin.initialize_app(cred, {
 # set root path as device
 ref = db.reference(os.getenv('DEVICE'))
 
+
+logger = logging.getLogger(__name__)
+
 def _map(x, min_input, max_input, min_output, max_output):
     """
     Map value between range
@@ -41,12 +45,14 @@ def discrete_soil_reading(raw_analog):
 
     percentage = _map(raw_analog, 0, MAX_VALUE_ADS, 0, 100)
 
+    logger.info(f"soil humidity : {percentage} %")
+
     # range of soil moist level, based on percentage
-    if 25 < percentage <= 100:
+    if 60 < percentage <= 100:
         status = "High"
-    elif 15 <= percentage <= 25:
+    elif 40 <= percentage <= 60:
         status = "Normal"
-    elif 0 <= percentage < 15:
+    elif 0 <= percentage < 40:
         status = "Low"
 
     return status
