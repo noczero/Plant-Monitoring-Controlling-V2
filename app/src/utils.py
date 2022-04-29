@@ -48,11 +48,11 @@ def discrete_soil_reading(raw_analog):
     logger.info(f"soil humidity : {percentage} %")
 
     # range of soil moist level, based on percentage
-    if 25 < percentage <= 100:
+    if 43 < percentage <= 100:
         status = "High"
-    elif 15 <= percentage <= 25:
+    elif 25 <= percentage <= 42:
         status = "Normal"
-    elif 0 <= percentage < 15:
+    elif 0 <= percentage < 25:
         status = "Low"
 
     return status

@@ -49,7 +49,7 @@ class DecisionTree(TrainedModels):
 
         if 'kale' in plant.name.lower() :
             # load kale models
-            self.trained_model = pickle.load(open('api/trained/kale_dt_model.sav', 'rb'))
+            self.trained_model = pickle.load(open('api/trained/kale_dt_model_14apr22.sav', 'rb'))
 
         elif 'seledri' in plant.name.lower() :
             # load seledri models
