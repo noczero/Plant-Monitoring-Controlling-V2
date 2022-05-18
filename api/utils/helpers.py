@@ -26,11 +26,11 @@ class KNN(TrainedModels):
 
         if 'bayam' in plant.name.lower():
             # load bayam models
-            self.trained_model = pickle.load(open('api/trained/bayam_knn_model.sav', 'rb'))
+            self.trained_model = pickle.load(open('api/trained/spinach_knn_model_27apr22.sav', 'rb'))
 
         elif 'caisim' in plant.name.lower():
             # load caisim models
-            self.trained_model = pickle.load(open('api/trained/caisim_knn_model.sav', 'rb'))
+            self.trained_model = pickle.load(open('api/trained/caisim_knn_model_18mei22.sav', 'rb'))
         else:
             logger.warn("Type of plant doesn't support yet")
 
